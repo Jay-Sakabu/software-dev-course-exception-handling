@@ -42,12 +42,15 @@ Your job is to fix it!
 // 🐞 Initial Code with Bugs (to be debugged)
 // ============================================
 
+//  Including Prompt for testing purposes
+// https://stackoverflow.com/questions/65472329/why-my-javascript-is-showing-reference-error-prompt-is-not-defined
+const prompt = require("prompt-sync")({sigint: true});
+
 let animals = [];
 let fees = [];
-
 function addAnimal(name, fee) {
     if (!name || fee < 0) {
-        throw new Error("Invalid animal name or adoption fee!");
+        throw new Error("Invalid animal name or adoption fee (Adoption fee must be Greater than or equal to 0!");
     }
     animals.push(name);
     fees.push(fee);
@@ -77,8 +80,14 @@ while (true) {
         }
 
         if (action === "add") {
-            let animal = prompt("Enter the animal's name: ");
-            let fee = Number(prompt("Enter the adoption fee: "));
+            let animal = prompt("Enter the animal's name: "); 
+            let fee;
+            do
+            {
+                let feeInput = prompt("Enter the adoption fee: ").trim();
+                fee = Number(feeInput)
+            } while(isNaN(fee)); // Change to "do-while" to ensure that fee is evaluated and always a number
+            
 
             try {
                 addAnimal(animal, fee);
@@ -102,7 +111,7 @@ while (true) {
         }
 
     } catch (err) {
-        console.log("Unexpected error:", err.message);
+        throw new Error("Unexpected error:", err.message); //Throw error instead of console logging, to ensure loop breaks on error
     }
 }
 
